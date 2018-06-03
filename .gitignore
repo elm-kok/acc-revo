@@ -1,0 +1,10 @@
+dataset/test.csv
+dataset/train.csv
+00000000000132559.sql
+dictionary.sql
+nodejsv1.zip
+web/venv/*
+web/accrevoquotation (5).sql
+nodejs/node_modules/*
+nodejs2/node_modules/*
+

@@ -1,0 +1,110 @@
+<!doctype html>
+<html ng-app="mymodal">
+
+
+<body>
+
+  <div class="container">
+    <h2>Customer Table</h2>
+    <table class="table" ng-controller="myCtrl">
+      <thead>
+        <tr>
+          <th scope="col">Customer-ID</th>
+          <th scope="col">Customer-Name</th>
+          <th scope="col">Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="x in records">
+          <td>{{x.cus_id}}</td>
+          <td>{{x.cus_name}}</td>
+          <td>
+            <div ng-controller="MainCtrl">
+              <button ng-click="toggleModal('Success'); addvalue(_id=x.cus_id); " class="btn btn-default">Detail</button>
+              <modal visible="showModal" ng-model="y">
+                Detaillllllllllll....
+                {{y}}
+              </modal>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+  <!-- App -->
+  <script>
+    var y='';
+    var mymodal = angular.module('mymodal', []);
+    mymodal.controller('MainCtrl', function ($scope,$http) {
+      $scope.showModal = false;
+      $scope.buttonClicked = "";
+      $scope.toggleModal = function (btnClicked) {
+        $scope.buttonClicked = btnClicked;
+        $scope.showModal = !$scope.showModal;
+      };
+      $scope.addvalue = function(element) {
+      $http.post('/',{"_id":$scope._id}).
+        then(function(response) {
+            console.log("posted successfully",$scope._id);
+        console.log(<%-y %>);
+        }).catch(function(response) {
+            console.error("error in posting");
+        });
+    };
+    });
+    mymodal.controller("myCtrl", function ($scope) {
+      var json = <%-JSON.stringify(x) %>;
+      $scope.records = JSON.parse(json);
+    });
+    mymodal.directive('modal', function () {
+      return {
+        template: '<div class="modal fade">' +
+          '<div class="modal-dialog">' +
+          '<div class="modal-content">' +
+          '<div class="modal-header">' +
+          '<h4 class="modal-title">{{ buttonClicked }}</h4>' +
+          '</div>' +
+          '<div class="modal-body" ng-transclude></div>' +
+          '</div>' +
+          '</div>' +
+          '</div>',
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: true,
+        link: function postLink(scope, element, attrs) {
+          scope.$watch(attrs.visible, function (value) {
+            if (value == true)
+              $(element).modal('show');
+            else
+              $(element).modal('hide');
+          });
+
+          $(element).on('shown.bs.modal', function () {
+            scope.$apply(function () {
+              scope.$parent[attrs.visible] = true;
+            });
+          });
+
+          $(element).on('hidden.bs.modal', function () {
+            scope.$apply(function () {
+              scope.$parent[attrs.visible] = false;
+            });
+          });
+        }
+      };
+    });
+
+  </script>
+</body>
+
+</html>

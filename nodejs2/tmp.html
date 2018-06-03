@@ -1,0 +1,86 @@
+<!doctype html>
+<html ng-app="mymodal">
+
+<body>
+  <div class="container">
+    <h2>Customer Table</h2>
+    <table class="table" ng-controller="myCtrl" >
+      <thead>
+        <tr>
+          <th scope="col">Customer-ID</th>
+          <th scope="col">Customer-Name</th>
+          <th scope="col">Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="x in records" >
+          <td>{{x.cus_id}}</td>
+          <td>{{x.cus_name}}</td>
+          <td>
+            <!-- Large modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Q&A</button>
+
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <h5 class="modal-title">{{x.cus_name}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Question Number</th>
+                          <th scope="col">Question</th>
+                          <th scope="col">Choice</th>
+                          <th scope="col">Answer Content</th>
+                          <th id="demo"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="y in records0[0]">
+                          <td>{{y.Q_id}}</td>
+                          <td>{{y.question}}</td>
+                          <td>{{y.content}}</td>
+                          <td>{{y.ans_content}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+  <!-- App -->
+  <script>
+    var mymodal = angular.module('mymodal', []);
+    mymodal.controller("myCtrl", function ($scope) {
+      $scope.records = <%-x %>;
+      $scope.records0 = [<%-y %>];
+      $scope.counter = 0;
+      $scope.foo = function(){
+        $scope.counter++;
+    return $scope.counter;
+  }
+    });
+  </script>
+</body>
+
+</html>
